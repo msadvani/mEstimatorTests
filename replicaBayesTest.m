@@ -11,13 +11,13 @@ c = -kappa*lambda;
 d = (-b+sqrt(b^2-4*c))/2;
 
  
-qThy  = @(k) ((d^2 + k)./((1+d)^2 - k));
+qThy  = @(k) ((d^2 + k*2)./((1+d)^2 - k));
 
 
 %% Simulation
 n=500;
 p = round(n*kappa);
-%s = 1;
+s = 1;
 
 
 
@@ -28,9 +28,9 @@ for cnt = 1:numSim
     X = (1/sqrt(p))*randn(n,p); %random unit normal design matrix
     beta0 = randn(p,1);
 
-    %sign = 2*round(rand(n,1))-1;
-    %epsilon = sign.*exprnd(s,n,1);  %double exponential
-    epsilon = randn(n,1);
+    sign = 2*round(rand(n,1))-1;
+    epsilon = sign.*exprnd(s,n,1);  %double exponential
+    %epsilon = randn(n,1);
     
     y = X*beta0 + epsilon;
 
