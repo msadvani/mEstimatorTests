@@ -5,15 +5,17 @@ function [out] = gridMinSearch(func, a, b, N, tol)
     xSet = linspace(a,b,N);
     [val, arg]=min(func(xSet));
     
-    
     if ((b-a)/N)<tol
        out = xSet(arg);
-        
+    elseif (arg==N)
+       out = gridMinSearch(func, a,a+2*(b-a),N,tol);
     else
-       a2= xSet(arg-1);
+       if(arg==1)
+           a2=xSet(1);
+       else
+           a2= xSet(arg-1);
+       end
        b2 = xSet(arg+1);
        out = gridMinSearch(func, a2, b2, N, tol);
     end
-    
- 
 end
