@@ -1,8 +1,10 @@
 clear all;
 close all;
 
-lambda = 6;
-kappa = .5;
+
+
+lambda = 1.5;
+kappa = .9;
 
 
 b = 1-kappa-kappa*lambda;
@@ -11,6 +13,8 @@ c = -kappa*lambda;
 d = (-b+sqrt(b^2-4*c))/2;
 
  
+
+%Note this needs to be changed based on the variance in f and g
 qThy  = @(k) ((d^2 + k*2)./((1+d)^2 - k));
 
 
@@ -55,8 +59,8 @@ for cnt = 1:numSim
 end
 
 
-disp('Numerical Experiment: 60% confidence interval')
-[mean(qErr)-std(qErr),mean(qErr)+std(qErr)]
+disp('Numerical Experiment: Estimate of 95% confidence interval')
+[mean(qErr)-2*std(qErr),mean(qErr)+2*std(qErr)]
 
 
 disp('Theory')

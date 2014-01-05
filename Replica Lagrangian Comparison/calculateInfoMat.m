@@ -1,4 +1,6 @@
 function [Iout] = calculateInfoMat(fNoise,q0Mat,L,N, dblErr) 
+%Matrix form of CalculateInfo takes a matrix of q Values and outputs a
+%matrix of the same dimensions
 
     Iout = zeros(size(q0Mat));
     

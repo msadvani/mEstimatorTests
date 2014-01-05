@@ -1,6 +1,6 @@
 function [out] = gridMinSearchNonVec(func, a, b, N, tol)
-%GRIDMINSEARCH. Returns the value that minimizes the function to a given
-%tolerance
+% same as GRIDMINSEARCH except this runs a bit slower but never needs to
+% access the function func as a vector.
 
     xSet = linspace(a,b,N);
     funSet = zeros(size(xSet));

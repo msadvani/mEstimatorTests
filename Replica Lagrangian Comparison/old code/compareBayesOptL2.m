@@ -2,23 +2,25 @@
 %predicted optimal erro based on my research. qOpt should always be lower,
 %apart from numerical inaccuracy.
 
-
 clear all;
 close all;
 
 
-numKappa = 10;
-kappaSet = linspace(.1,.9,numKappa);
+kappaSet = [.3,.5,.8,1,1.3];
+numKappa = length(kappaSet);
+%kappaSet = linspace(.1,.9,numKappa);
 
 
 fNoise = @(x) (2*pi)^(-1/2)*exp(-x.^2/2); %noise 
 g = @(x) (1/2)*exp(-abs(x)); %coefficient distrib.
 
+%g = @(x) (2*pi)^(-1/2)*exp(-x.^2/2); %coefficient distrib.
+
 
 qOpt = zeros(1, numKappa);
 
 for kcnt = 1:numKappa
-    
+    [kcnt,numKappa]
     kappa = kappaSet(kcnt);
 
     %% Theory for Optimal error
@@ -42,10 +44,17 @@ for kcnt = 1:numKappa
 
     d = @(q)(aMin1(q)-aMin2(q)).^2;
 
-    qOpt(kappa) = gridMinSearchNonVec(d,.05,1,10,.01)
+    qOpt(kcnt) = gridMinSearchNonVec(d,.05,1,10,.01);
+    
+
 end
 
 save qOpt1.mat qOpt
+
+
+
+
+
 
 
 
@@ -132,13 +141,20 @@ save qOpt1.mat qOpt
 
 %% Theory for a suboptimal case (L2 norm) [This comes from replica equations]
 
-% f=@(lam)qThyL2(kappa,lam)
-% 
-% lamMin = gridMinSearch(f,0,10,100,.01);
-% 
-% qThyMin = f(lamMin)
+qL2Min = zeros(1,numKappa);
+for kcnt = 1:numKappa
+    kappa = kappaSet(kcnt);
+    f=@(lam)qThyL2(kappa,lam);
+
+    lamMin = gridMinSearch(f,0,10,100,.01);
+    qL2Min(kcnt) = f(lamMin);
+end
+
+save qthy.mat kappaSet qL2Min
 
 
-
+hold on;
+plot(kappaSet, qL2Min,'r')
+plot(kappaSet, qOpt)
 
 
