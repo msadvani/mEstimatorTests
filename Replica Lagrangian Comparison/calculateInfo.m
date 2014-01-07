@@ -4,11 +4,14 @@ function [Iout] = calculateInfo(fNoise,q0,L,N, dblErr)
 
     I11 = InfoApprox(fNoise,q0,L,N);
     I12 = InfoApprox(fNoise,q0,L,2*N);
+   
 
     errN= abs(I12 - I11);
+    %if(errN>dblErr || I12==0)
     if(errN>dblErr)
         Iout = calculateInfo(fNoise,q0,L,2*N,dblErr);
     else
+        %In case you need to resize the interval
         I22 = InfoApprox(fNoise,q0,2*L,2*N);
         errL = abs(I22-I11);
 
@@ -17,6 +20,10 @@ function [Iout] = calculateInfo(fNoise,q0,L,N, dblErr)
         else    
             Iout = I22;
         end  
+    end
+    
+    if (Iout==0)
+        error('Iout likely inaccurate (Info==0)')
     end
 end
 

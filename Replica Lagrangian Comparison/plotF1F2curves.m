@@ -1,6 +1,3 @@
-%Did a comparison with CompareBayesOptL2 - this is the same basic code, but
-%for a single kappa
-
 clear all;
 close all;
 
@@ -28,27 +25,29 @@ J = @(x) calculateInfoMat(g,x, L0, N0, dblErr);
 %plot(a,a - a.^2.*J(a))
 
 %two constraints
-F1 = @(q,a) (a - a.^2.*J(a) - q).^2;
-F2 = @(q,a) (I(q).*a - kappa).^2;
+F1 = @(q,a) (a - a.^2.*J(a) - q)
+F2 = @(q,a) (I(q).*a - kappa);
+
+
+q = 1; %Set q values
+
+aSet = linspace(.1,10,100);
+
+
+hold on;
+
+plot(aSet,F1(q,aSet),'r');
+plot(aSet,F2(q,aSet));
+plot(aSet, zeros(size(aSet)),'k');
+
+legend('F1','F2')
+
+xlabel('a')
+xlabel('F')
 
 
 
 
 
-% numA = 50;
-% numQ = 50;
-% aSet =repmat(linspace(0,400,numA),numQ,1);
-% qSet = repmat(linspace(0,10,numQ)',1,numA);
 
-
-aMin1 = @(q)gridMinSearch(@(x)F1(q,x),0,5,10,.01);
-aMin2 = @(q)gridMinSearch(@(x)F2(q,x),0,5,10,.01);
-
-
-d = @(q)(aMin1(q)-aMin2(q)).^2;
-
-qOpt = gridMinSearchNonVec(d,.05,2,10,.005)
-
-
-
-
+%findZeroBB(F1,a,b,tol)

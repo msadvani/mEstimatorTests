@@ -7,8 +7,8 @@ function [out] = gridMinSearch(func, a, b, N, tol)
     
     if ((b-a)/N)<tol
        out = xSet(arg);
-    elseif (arg==N)
-       out = gridMinSearch(func, a,a+2*(b-a),N,tol);
+    elseif (arg==N) %minimum is at the end of the bounds
+       out = gridMinSearch(func, a,a+2*(b-a),2*N,tol);
     else
        if(arg==1)
            a2=xSet(1);

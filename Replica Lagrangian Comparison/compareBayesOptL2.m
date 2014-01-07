@@ -5,10 +5,11 @@
 clear all;
 close all;
 
-
-kappaSet = [.3,.5,.8,1,1.3];
+kappaSet = [.3,1.3,2.3];
 numKappa = length(kappaSet);
-%kappaSet = linspace(.1,.9,numKappa);
+
+%numKappa = 20;
+%kappaSet = linspace(.1,2,numKappa);
 
 
 fNoise = @(x) (2*pi)^(-1/2)*exp(-x.^2/2); %noise 
@@ -44,8 +45,7 @@ for kcnt = 1:numKappa
 
     d = @(q)(aMin1(q)-aMin2(q)).^2;
 
-    qOpt(kcnt) = gridMinSearchNonVec(d,.05,1,10,.01);
-    
+    qOpt(kcnt) = gridMinSearchNonVec(d,.05,2,10,.01);
 
 end
 
@@ -59,7 +59,6 @@ qL2Min = zeros(1,numKappa);
 for kcnt = 1:numKappa
     kappa = kappaSet(kcnt);
     f=@(lam)qThyL2(kappa,lam);
-
     lamMin = gridMinSearch(f,0,10,100,.01);
     qL2Min(kcnt) = f(lamMin);
 end

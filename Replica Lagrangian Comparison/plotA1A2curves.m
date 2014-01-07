@@ -1,6 +1,3 @@
-%Did a comparison with CompareBayesOptL2 - this is the same basic code, but
-%for a single kappa
-
 clear all;
 close all;
 
@@ -32,9 +29,6 @@ F1 = @(q,a) (a - a.^2.*J(a) - q).^2;
 F2 = @(q,a) (I(q).*a - kappa).^2;
 
 
-
-
-
 % numA = 50;
 % numQ = 50;
 % aSet =repmat(linspace(0,400,numA),numQ,1);
@@ -45,9 +39,33 @@ aMin1 = @(q)gridMinSearch(@(x)F1(q,x),0,5,10,.01);
 aMin2 = @(q)gridMinSearch(@(x)F2(q,x),0,5,10,.01);
 
 
-d = @(q)(aMin1(q)-aMin2(q)).^2;
+%% Now plot aMin1 and aMin2
 
-qOpt = gridMinSearchNonVec(d,.05,2,10,.005)
+numQ = 12;
+
+qSet = linspace(.05,5,12);
+
+aMin1Set = zeros(size(qSet));
+aMin2Set = zeros(size(qSet));
+
+
+for qcnt = 1:numQ
+    [qcnt,numQ]
+    qVal = qSet(qcnt);
+    aMin1Set(qcnt) = aMin1(qVal);
+    aMin2Set(qcnt) = aMin2(qVal); 
+end
+
+
+hold on
+plot(qSet, aMin1Set,'r')
+plot(qSet, aMin2Set)
+
+legend('a1','a2')
+
+xlabel('q')
+ylabel('a')
+
 
 
 
