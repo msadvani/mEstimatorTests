@@ -6,6 +6,10 @@ function [out] = findZeroBB(func,a,b,tol)
     if (a<=0)
         error('a must be greater than 0')
     end
+    
+    if (b<a)
+        error('b must be greater than a')
+    end
 
 
 %% find a large lower bound a    
@@ -20,8 +24,9 @@ function [out] = findZeroBB(func,a,b,tol)
 
 %% find a small upper bound on b
     cnt = 1;
+    b0=b;
     while(func(b)<0)
-        b=2*b;
+        b=b+(b0-a);
         cnt=cnt+1;
         if(cnt>maxIter)
            error('maxIteration exceeded in finding smallPosPt - the function may not be positive betweennegative between 0 and b') 

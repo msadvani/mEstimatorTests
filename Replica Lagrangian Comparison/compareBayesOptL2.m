@@ -5,11 +5,11 @@
 clear all;
 close all;
 
-kappaSet = [.3,1.3,2.3];
-numKappa = length(kappaSet);
+%kappaSet = [.3,1.3,2.3];
+%numKappa = length(kappaSet);
 
-%numKappa = 20;
-%kappaSet = linspace(.1,2,numKappa);
+numKappa = 25;
+kappaSet = linspace(.1,5,numKappa);
 
 
 fNoise = @(x) (2*pi)^(-1/2)*exp(-x.^2/2); %noise 
@@ -35,17 +35,17 @@ for kcnt = 1:numKappa
     J = @(x) calculateInfoMat(g,x, L0, N0, dblErr);
     
     %two constraints
-    F1 = @(q,a) (a - a.^2.*J(a) - q).^2;
-    F2 = @(q,a) (I(q).*a - kappa).^2;
+    F1 = @(q,a) (a - a.^2.*J(a) - q);
+    F2 = @(q,a) (I(q).*a - kappa);
 
 
-    aMin1 = @(q)gridMinSearch(@(x)F1(q,x),0,5,10,.01);
-    aMin2 = @(q)gridMinSearch(@(x)F2(q,x),0,5,10,.01);
+    aMin1 = @(q)findZeroBB(@(x)F1(q,x),.05,3,.001);
+    aMin2 = @(q)findZeroBB(@(x)F2(q,x),.05,3,.001);
 
 
-    d = @(q)(aMin1(q)-aMin2(q)).^2;
+    d = @(q)(aMin1(q)-aMin2(q));
 
-    qOpt(kcnt) = gridMinSearchNonVec(d,.05,2,10,.01);
+    qOpt(kcnt) = findZeroBB(d,.05,2,.001);
 
 end
 
@@ -59,7 +59,7 @@ qL2Min = zeros(1,numKappa);
 for kcnt = 1:numKappa
     kappa = kappaSet(kcnt);
     f=@(lam)qThyL2(kappa,lam);
-    lamMin = gridMinSearch(f,0,10,100,.01);
+    lamMin = gridMinSearch(f,0,10,100,.005);
     qL2Min(kcnt) = f(lamMin);
 end
 
@@ -69,5 +69,9 @@ save qOptVsL2data.mat kappaSet qL2Min qOpt
 hold on;
 plot(kappaSet, qL2Min,'r')
 plot(kappaSet, qOpt)
+
+legend('qL2Min','qOpt')
+xlabel('kappa')
+ylabel('q')
 
 

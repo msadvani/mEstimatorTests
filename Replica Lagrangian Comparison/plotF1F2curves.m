@@ -47,7 +47,4 @@ xlabel('F')
 
 
 
-
-
-
-%findZeroBB(F1,a,b,tol)
+findZeroBB(@(x)F1(q,x),1,2,.01)

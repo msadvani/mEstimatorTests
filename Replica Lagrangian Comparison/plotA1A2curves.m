@@ -1,7 +1,7 @@
 clear all;
 close all;
 
-kappa = 2.3;
+kappa = 50;
 
 
 fNoise = @(x) (2*pi)^(-1/2)*exp(-x.^2/2);
@@ -25,8 +25,8 @@ J = @(x) calculateInfoMat(g,x, L0, N0, dblErr);
 %plot(a,a - a.^2.*J(a))
 
 %two constraints
-F1 = @(q,a) (a - a.^2.*J(a) - q).^2;
-F2 = @(q,a) (I(q).*a - kappa).^2;
+F1 = @(q,a) (a - a.^2.*J(a) - q);
+F2 = @(q,a) (I(q).*a - kappa);
 
 
 % numA = 50;
@@ -35,15 +35,19 @@ F2 = @(q,a) (I(q).*a - kappa).^2;
 % qSet = repmat(linspace(0,10,numQ)',1,numA);
 
 
-aMin1 = @(q)gridMinSearch(@(x)F1(q,x),0,5,10,.01);
-aMin2 = @(q)gridMinSearch(@(x)F2(q,x),0,5,10,.01);
+%aMin1 = @(q)gridMinSearch(@(x)F1(q,x),0,5,10,.01);
+%aMin2 = @(q)gridMinSearch(@(x)F2(q,x),0,5,10,.01);
+
+aMin1 = @(q)findZeroBB(@(x)F1(q,x),.1,10,.01)
+aMin2 = @(q)findZeroBB(@(x)F2(q,x),.1,10,.01)
+
 
 
 %% Now plot aMin1 and aMin2
 
-numQ = 12;
+numQ = 10;
 
-qSet = linspace(.05,5,12);
+qSet = linspace(.05,4,numQ);
 
 aMin1Set = zeros(size(qSet));
 aMin2Set = zeros(size(qSet));

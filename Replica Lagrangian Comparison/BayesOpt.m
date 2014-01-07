@@ -28,10 +28,8 @@ J = @(x) calculateInfoMat(g,x, L0, N0, dblErr);
 %plot(a,a - a.^2.*J(a))
 
 %two constraints
-F1 = @(q,a) (a - a.^2.*J(a) - q).^2;
-F2 = @(q,a) (I(q).*a - kappa).^2;
-
-
+F1 = @(q,a) (a - a.^2.*J(a) - q);
+F2 = @(q,a) (I(q).*a - kappa);
 
 
 
@@ -41,14 +39,18 @@ F2 = @(q,a) (I(q).*a - kappa).^2;
 % qSet = repmat(linspace(0,10,numQ)',1,numA);
 
 
-aMin1 = @(q)gridMinSearch(@(x)F1(q,x),0,5,10,.01);
-aMin2 = @(q)gridMinSearch(@(x)F2(q,x),0,5,10,.01);
+%aMin1 = @(q)gridMinSearch(@(x)F1(q,x),0,5,10,.01);
+%aMin2 = @(q)gridMinSearch(@(x)F2(q,x),0,5,10,.01);
 
 
-d = @(q)(aMin1(q)-aMin2(q)).^2;
+aMin1 = @(q)findZeroBB(@(x)F1(q,x),.1,10,.01)
+aMin2 = @(q)findZeroBB(@(x)F2(q,x),.1,10,.01)
 
-qOpt = gridMinSearchNonVec(d,.05,2,10,.005)
+%d = @(q)(aMin1(q)-aMin2(q)).^2;
+%qOpt = gridMinSearchNonVec(d,.05,2,10,.005)
 
+d = @(q)(aMin1(q)-aMin2(q));
+qOpt = findZeroBB(d,.05,2,.005)
 
 
 
