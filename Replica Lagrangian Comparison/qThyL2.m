@@ -1,4 +1,4 @@
-function [out] = qThyL2(k, lambda)
+function [out] = qThyL2(k, lambda, varCoeff, varNoise)
 %Exact analytic error for two l2 norms with a lambda ratio
 %TO DO: add in additional parameters dependent on the variances of f and g!
 
@@ -7,7 +7,7 @@ c = -k.*lambda;
  
 d = (-b+sqrt(b.^2-4*c))/2;
  
-out = ((2*d.^2 + k)./((1+d).^2 - k));
+out = ((varCoeff*d.^2 + varNoise*k)./((1+d).^2 - k));
 
 end
 

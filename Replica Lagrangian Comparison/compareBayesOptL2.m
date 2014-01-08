@@ -7,21 +7,31 @@ close all;
 
 %kappaSet = [.3,1.3,2.3];
 %numKappa = length(kappaSet);
-
+ 
 numKappa = 25;
 kappaSet = linspace(.1,5,numKappa);
 
 
-fNoise = @(x) (2*pi)^(-1/2)*exp(-x.^2/2); %noise 
-g = @(x) (1/2)*exp(-abs(x)); %coefficient distrib.
+%fNoise = @(x) (2*pi)^(-1/2)*exp(-x.^2/2); %noise
+%fNoise = @(x) (1/2)*exp(-abs(x)); %noise
+fNoise = @(x) probDist(x);
+
+
 
 %g = @(x) (2*pi)^(-1/2)*exp(-x.^2/2); %coefficient distrib.
+g = @(x) (1/2)*exp(-abs(x)); %coefficient distrib.
+
+varNoise = sumIntIndef(@(x) x.^2.*fNoise(x), 2,10,.00001)
+varCoeff = sumIntIndef(@(x) x.^2.*g(x), 2,10,.00001)
+
+
 
 
 qOpt = zeros(1, numKappa);
-
+tic
 for kcnt = 1:numKappa
     [kcnt,numKappa]
+
     kappa = kappaSet(kcnt);
 
     %% Theory for Optimal error
@@ -46,7 +56,8 @@ for kcnt = 1:numKappa
     d = @(q)(aMin1(q)-aMin2(q));
 
     qOpt(kcnt) = findZeroBB(d,.05,2,.001);
-
+    
+    timeElapsed = toc
 end
 
 
@@ -58,7 +69,7 @@ end
 qL2Min = zeros(1,numKappa);
 for kcnt = 1:numKappa
     kappa = kappaSet(kcnt);
-    f=@(lam)qThyL2(kappa,lam);
+    f=@(lam)qThyL2(kappa,lam,varCoeff, varNoise);
     lamMin = gridMinSearch(f,0,10,100,.005);
     qL2Min(kcnt) = f(lamMin);
 end
@@ -74,4 +85,4 @@ legend('qL2Min','qOpt')
 xlabel('kappa')
 ylabel('q')
 
-
+totalTime = toc

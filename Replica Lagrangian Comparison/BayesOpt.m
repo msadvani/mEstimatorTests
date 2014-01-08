@@ -7,8 +7,10 @@ close all;
 kappa = 2.3;
 
 
-fNoise = @(x) (2*pi)^(-1/2)*exp(-x.^2/2);
+%fNoise = @(x) (2*pi)^(-1/2)*exp(-x.^2/2);
+fNoise = @(x) probDist(x);
 g = @(x) (1/2)*exp(-abs(x));
+
 
 
 %% Theory for Optimal error
