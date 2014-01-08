@@ -4,11 +4,14 @@
 clear all;
 close all;
 
-kappa = 2.3;
+kappa = 1.325;
 
 
 %fNoise = @(x) (2*pi)^(-1/2)*exp(-x.^2/2);
-fNoise = @(x) probDist(x);
+%fNoise = @(x) probDist(x);
+%fNoise = @(x) (1/2)*exp(-abs(x-5))
+fNoise = @(x) exp(x)./((1+exp(x)).^2)
+
 g = @(x) (1/2)*exp(-abs(x));
 
 
@@ -45,14 +48,14 @@ F2 = @(q,a) (I(q).*a - kappa);
 %aMin2 = @(q)gridMinSearch(@(x)F2(q,x),0,5,10,.01);
 
 
-aMin1 = @(q)findZeroBB(@(x)F1(q,x),.1,10,.01)
-aMin2 = @(q)findZeroBB(@(x)F2(q,x),.1,10,.01)
+aMin1 = @(q)findZeroBB(@(x)F1(q,x),.1,10,.001)
+aMin2 = @(q)findZeroBB(@(x)F2(q,x),.1,10,.001)
 
 %d = @(q)(aMin1(q)-aMin2(q)).^2;
 %qOpt = gridMinSearchNonVec(d,.05,2,10,.005)
 
 d = @(q)(aMin1(q)-aMin2(q));
-qOpt = findZeroBB(d,.05,2,.005)
+qOpt = findZeroBB(d,.05,2,.001)
 
 
 

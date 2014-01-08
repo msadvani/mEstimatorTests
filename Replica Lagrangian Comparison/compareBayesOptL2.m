@@ -13,8 +13,11 @@ kappaSet = linspace(.1,5,numKappa);
 
 
 %fNoise = @(x) (2*pi)^(-1/2)*exp(-x.^2/2); %noise
-%fNoise = @(x) (1/2)*exp(-abs(x)); %noise
-fNoise = @(x) probDist(x);
+%fNoise = @(x) (1/2)*exp(-abs(x-10)); %noise
+fNoise = @(x) exp(x)./((1+exp(x)).^2);
+
+
+%fNoise = @(x) probDist(x);
 
 
 

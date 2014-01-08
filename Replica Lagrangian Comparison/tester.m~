@@ -5,4 +5,4 @@ fNoise = @(x) exp(x)./((1+exp(x)).^2)
 
 %sumIntIndef(fNoise, 2,10,.00001)
 
-sumIntIndef(@(x) (x.^2).*fNoise(x), 2,10,.000001)
+sumIntIndef(@(x) (x.^2).*fNoise(x), 2,10,.00001)
