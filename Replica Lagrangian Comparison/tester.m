@@ -1,8 +1,14 @@
-fNoise = @(x) exp(x)./((1+exp(x)).^2)
+clear all;
+close all;
 
 
+load nVsq0simL2Bayes_kappa.5_lambda1.mat
+
+hold on;
+
+plot(nSet, qThyVal*ones(size(nSet)));
+error(nSet, mean(qErr),std(qErr));
 
 
-%sumIntIndef(fNoise, 2,10,.00001)
-
-sumIntIndef(@(x) (x.^2).*fNoise(x), 2,10,.000001)
+xlabel('number of data points')
+ylabel('Averaged square error in single coefficient')

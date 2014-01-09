@@ -8,11 +8,13 @@ N0=10^3; %initial num point in integral approx
 dblErr=.001; %permissible error in I
 IQ = @(x) IQfunc(fNoise,x,L0,N0, dblErr);
 
-fToMin = @(z)(IQ(z) - kappa).^2;
+% fToMin = @(z)(IQ(z) - kappa).^2;
+% qOpt = gridMinSearch(fToMin,0,5,100,.001);
 
-qOpt = gridMinSearch(fToMin,0,5,100,.001);
 
-qOpt
+fToMin = @(z)(IQ(z) - kappa);
+qOpt = findZeroBB(fToMin,.1,5,.001)
+
 
 % 
 % xSet = linspace(0,5,100);
@@ -24,10 +26,6 @@ qOpt
 %xMin = xSet(arg);
 %qOpt = xMin;
 % plot(xSet, fToMin(xSet))
-
-
-
-
 
 
 %Now find where IQ intersects with kappa...
