@@ -1,0 +1,88 @@
+clear all;
+close all;
+
+
+
+fNoise = @(x) exp(x)./((1+exp(x)).^2); %noise distribution
+g = @(x) (1/2)*exp(-abs(x)); %coefficient distrib.
+
+varNoise = sumIntIndef(@(x) x.^2.*fNoise(x), 2,10,.00001)
+varCoeff = sumIntIndef(@(x) x.^2.*g(x), 2,10,.00001)
+
+n=500;
+
+lambda = 2;
+
+numKappa = 25;
+kappaSet = linspace(.1,3,numKappa);
+
+
+
+numSamples = 15;
+qErr = zeros(numSamples,numKappa);
+qThyVal = zeros(1,numKappa);
+
+tic
+for kappaCnt = 1:numKappa
+    [kappaCnt,numKappa]
+    tElpsed = toc/60
+    kappa = kappaSet(kappaCnt);
+    qThyVal(kappaCnt) = qThyL2(kappa, lambda, varCoeff, varNoise);
+    
+    for sampleCnt = 1:numSamples
+        p = round(n*kappa);
+        X = (1/sqrt(p))*randn(n,p); %random unit normal design matrix
+
+    %     beta0 = randn(p,1);
+        sign = 2*round(rand(p,1))-1;
+        beta0 = sign.*exprnd(1,p,1);  %double exponential
+
+    %     sign = 2*round(rand(n,1))-1;
+    %     epsilon = sign.*exprnd(s,n,1);  %double exponential
+
+        epsilon = random('logistic',0,1,n,1);
+
+        %epsilon = randn(n,1);
+
+        y = X*beta0 + epsilon;
+
+
+        bMin = fminunc(@(b)(norm(y-X*b,2)^2 + lambda*norm(b,2)^2),randn(p,1));
+
+        qErr(sampleCnt,kappaCnt) = (1/p)*norm(bMin - beta0,2)^2;
+
+
+    end
+end
+
+
+
+
+% hold on;
+% plot(kappaSet, qThyVal,'k')
+% errorbar(kappaSet, mean(qErr),2*std(qErr))
+
+
+
+hold on;
+kappaMat = repmat(kappaSet, numSamples, 1);
+kappaSetVec = reshape(kappaMat,1,numKappa*numSamples);
+qErrVec = reshape(qErr,1,numKappa*numSamples);
+
+
+scatter(kappaSetVec, qErrVec,'r.');
+
+pThy = plot(kappaSet, qThyVal,'k');
+
+set(pThy,'Linewidth',2.5);
+
+legend('Theory','Simulations')
+
+xlabel('kappa');
+ylabel('error')
+
+title('Comparing Replica Theory Results with Simulations for Laplacian Coefficients and Logistic Noise');
+
+
+totalTime = toc;
+numMin =totalTime/60
