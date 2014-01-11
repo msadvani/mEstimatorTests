@@ -55,7 +55,23 @@ aMin2 = @(q)findZeroBB(@(x)F2(q,x),.1,10,.001)
 %qOpt = gridMinSearchNonVec(d,.05,2,10,.005)
 
 d = @(q)(aMin1(q)-aMin2(q));
-qOpt = findZeroBB(d,.05,2,.001)
+qOpt = findZeroBB(d,.05,2,.001);
+
+a1 = aMin1(qOpt);
+a2 = aMin2(qOpt);
+
+aOpt = .5*(a1+a2);
+
+
+
+
+qOpt
+aOpt
+
+
+
+
+
 
 
 
