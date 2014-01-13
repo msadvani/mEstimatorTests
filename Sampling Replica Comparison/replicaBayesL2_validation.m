@@ -4,7 +4,9 @@ close all;
 
 
 fNoise = @(x) exp(x)./((1+exp(x)).^2); %noise distribution
-g = @(x) (1/2)*exp(-abs(x)); %coefficient distrib.
+%g = @(x) (1/2)*exp(-abs(x)); %coefficient distrib.
+
+g = @(x)probDist(x)
 
 varNoise = sumIntIndef(@(x) x.^2.*fNoise(x), 2,10,.00001)
 varCoeff = sumIntIndef(@(x) x.^2.*g(x), 2,10,.00001)
@@ -29,13 +31,13 @@ kappa = .9;
 qThyVal = qThyL2(kappa, lambda, varCoeff, varNoise);
 
 %% Simulation
-n=1000;
+n=800;
 p = round(n*kappa);
 s = 1;
 
 
 
-numSim = 5;
+numSim = 8;
 qErr = zeros(1,numSim);
 for cnt = 1:numSim
     X = (1/sqrt(p))*randn(n,p); %random unit normal design matrix
