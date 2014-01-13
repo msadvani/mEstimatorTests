@@ -43,7 +43,7 @@ normSet = @(q0,c) gauss(xSet,sqrt(a(q0,c)));
 xi = @(q0,c) conv(normSet(q0,c),fSet)*(2*L/N);
 
 convMeas = linspace(-2*L,2*L,2*N-1);
-dConvMeas = (4*L/(2*N-1));
+
 
 
 %Note that as q0 becomes very very large this is not longer accurate.
@@ -54,19 +54,19 @@ I = @(q0,c) sum(xi(q0,c))*(4*L/(2*N-1))
 
 
 
-F1= @(q0,c) q0 + a(q0,c) - sum(xi(q0,c).*(convMeas - proxSigma(convMeas,1./(2*cHat(q0,c)))).^2*dConvMeas) - 2*a(q0,c)*sum(xi(q0,c).*proxSigmaPrime(convMeas,1./(2*cHat(q0,c)))*dConvMeas);
+F1= @(q0,c) q0 + a(q0,c) - xi(convMe).*(convMeas ) 
 
 
 
 %This should be correct even if convMeas not right...
-F2 = @(q0,c) -c./(1+c)+kappa*sum(xi(q0,c).*proxSigmaPrime(convMeas,1/(2*cHat(q0,c))))*dConvMeas;
+F2 = @(q0,c) -c./(1+c)+kappa*sum(xi(q0,c).*proxSigmaPrime(convMeas,1/(2*cHat(q0,c))))*(4*L/(2*N-1));
 
 
 
 
 
 
-%Now we need to compare this with the analytic solution already worked out!
+
 
 
 
