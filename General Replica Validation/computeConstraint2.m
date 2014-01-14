@@ -1,4 +1,4 @@
-function [ F2, I ] = computeConstraint1(q0,c, fNoise, g,kappa,N0,L0,pTol)
+function [ F2, I ] = computeConstraint2(q0,c, fNoise, g,kappa,N0,L0,pTol)
 %Returns the value of the 1st constraint, where the integral over the
 %convolved coefficient distribution is approximately 1.
 
@@ -34,7 +34,7 @@ I = sum(xi(q0,c))*(4*L/(2*N-1))
 if(abs(1-I)>pTol)
     error('Poor estimate of probability normalization');
 end
-F2 = -c./(1+c)+kappa*sum(xi(q0,c).*proxSigmaPrime(convMeas,1/(2*cHat(q0,c))))*dConvMeas;
+F2 = c./(1+c)-kappa*sum(xi(q0,c).*proxSigmaPrime(convMeas,1/(2*cHat(q0,c))))*dConvMeas;
 
 
 

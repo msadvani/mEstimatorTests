@@ -70,7 +70,7 @@ F2 = @(q0,c) -c./(1+c)+kappa*sum(xi(q0,c).*proxSigmaPrime(convMeas,1/(2*cHat(q0,
 %Now we need to compare this with the analytic solution already worked out!
 
 
-
+       
 
 
 
