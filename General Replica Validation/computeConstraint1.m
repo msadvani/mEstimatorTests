@@ -35,7 +35,7 @@ if (abs(1-I)>pTol)
     error('Poor estimate of probability normalization');
 end
 
-F1= q0 + a(q0,c) - sum(xi(q0,c).*(convMeas - proxSigma(convMeas,1./(2*cHat(q0,c)))).^2*dConvMeas) - 2*a(q0,c)*sum(xi(q0,c).*proxSigmaPrime(convMeas,1./(2*cHat(q0,c)))*dConvMeas);
+F1= - q0 - a(q0,c) + sum(xi(q0,c).*(convMeas - proxSigma(convMeas,1./(2*cHat(q0,c)))).^2*dConvMeas) + 2*a(q0,c)*sum(xi(q0,c).*proxSigmaPrime(convMeas,1./(2*cHat(q0,c)))*dConvMeas);
 
 % while abs(1-I)>pTol
 %     L=L+L0;

@@ -29,7 +29,7 @@ dConvMeas = (4*L/(2*N-1));
 %Note that as q0 becomes very very large this is not longer accurate.
 %Perhaps you should require choosing N, L s.t I(q0, c) >.995
 %I = @(q0,c) sum(xi(q0,c))*(4*L/(2*N-1))
-I = sum(xi(q0,c))*(4*L/(2*N-1))
+I = sum(xi(q0,c))*(4*L/(2*N-1));
 
 if(abs(1-I)>pTol)
     error('Poor estimate of probability normalization');

@@ -18,8 +18,8 @@ cHat = @(q0,c) (1./(2*kappa*(1+c)));
 a = @(q0) (q0 + varNoise)*kappa;
 
 
-N=10000;
-L=15;
+N=5000;
+L=13;
 
 
 
@@ -75,6 +75,93 @@ F1Thy = @(q0,c) -q0 + (lambda^2*kappa^2*(1+c).^2*varCoeff + a(q0))./(1+lambda*ka
 F2Thy = @(q0,c) c./(1+c) - kappa./(1+lambda*kappa*(1+c))
 
 
+
+
+% 
+% %for plotting
+% q0=.6;
+% 
+% 
+% 
+% numC=100;
+% cSet = linspace(0,10,numC);
+%  
+% F1setThy = zeros(size(cSet));
+% F1set = zeros(size(cSet));
+%  
+% 
+% F2setThy = zeros(size(cSet));
+% F2set = zeros(size(cSet));
+%  
+% for cnt =1:numC
+%     [cnt,numC] 
+%     c = cSet(cnt);
+%     F1set(cnt) = F1(q0,c);
+%     F1setThy(cnt) = F1Thy(q0,c);
+%     F2set(cnt) = F2(q0,c);
+%     F2setThy(cnt) = F2Thy(q0,c);
+% 
+% end
+%  
+%  hold on;
+% 
+% plot(cSet,F1set,'-')
+% plot(cSet,F1setThy,'r*')
+% 
+% plot(cSet,F2set,'k')
+% plot(cSet,F2setThy,'g*')
+% 
+% plot(cSet,zeros(size(cSet)),'k')
+% 
+
+
+
+tic
+
+c1Min = @(q) findZeroBB_cutoff(@(c)F1(q,c),.01,2,.001);
+c2Min = @(q) findZeroBB_cutoff(@(c)F2(q,c),.01,2,.001);
+
+
+
+
+
+
+
+
+
+%qOpt = findZeroBB(@(q0) (c1Min(q)-c2Min(q)),.01,2,.001);
+
+
+
+
+
+% numQ = 20;
+% 
+% c1Set = zeros(1,numQ);
+% c2Set = zeros(1,numQ);
+% 
+% qSet = linspace(0,2,numQ)
+% for qCnt =1:numQ
+%      [qCnt,numQ] 
+%      q = qSet(qCnt);
+%      c1Set(qCnt) = c1Min(q);
+%      c2Set(qCnt) = c2Min(q);
+% end
+% 
+% 
+% hold on;
+% 
+% plot(qSet,c1Set,'-')
+% plot(qSet,c2Set,'r-')
+
+
+
+q0 = findZeroBB(@(q) (c1Min(q)-c2Min(q)),.01,2,.001)
+
+
+cVec=[c1Min(q0),c2Min(q0)]
+
+toc
 
 
 
