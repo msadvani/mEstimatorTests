@@ -4,8 +4,8 @@ function [ F1, I ] = computeConstraint1(q0,c, fNoise, g,kappa,N0,L0,pTol)
 
 gauss = @(x,sigma) (2*pi*sigma.^2).^(-1/2)*exp(-x.^2./(2*sigma.^2));
 
-N=N0;
-L=L0;
+N = N0;
+L = L0;
 
 varNoise = sumIntIndef(@(x) x.^2.*fNoise(x), 2,10,.00001);
 

@@ -11,10 +11,4 @@
 %  row=r(col)
 
 
-func2d = @(x,y) (x-1).^2 +(y-2).^2;
-
-[arg,err]=gridMin2d(func2d,0,0,3,3,.001)
-
-
-
-x<g
+func2d = @(x,y) (x-1).^2 _(y-)
