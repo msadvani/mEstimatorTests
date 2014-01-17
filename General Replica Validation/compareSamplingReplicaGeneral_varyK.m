@@ -10,20 +10,28 @@ q0Replica = zeros(size(kappaSet));
 qErr = zeros(numSim,numK);
 
 
+
+
+%definition of probability distributions
+gauss = @(x,sigma) (2*pi*sigma.^2).^(-1/2)*exp(-x.^2./(2*sigma.^2));
+
+sigNoise = 1;
+%fNoise = @(x) gauss(x,sigNoise);
+fNoise = @(x) 1/2*exp(-abs(x));
+
+g = @(x) 1/2*exp(-abs(x));
+
+varNoise = sumIntIndef(@(x) x.^2.*fNoise(x), 2,10,.00001);
+varCoeff = sumIntIndef(@(x) x.^2.*g(x), 2,10,.00001)
+
+
 tic
 for kcnt=1:numK
     disp('Big Loop')
     [kcnt,numK]
     kappa = kappaSet(kcnt);
     
-    gauss = @(x,sigma) (2*pi*sigma.^2).^(-1/2)*exp(-x.^2./(2*sigma.^2));
-
-    sigNoise = 1;
-    fNoise = @(x) gauss(x,sigNoise);
-    g = @(x) 1/2*exp(-abs(x));
-
-    varNoise = sumIntIndef(@(x) x.^2.*fNoise(x), 2,10,.00001);
-    varCoeff = sumIntIndef(@(x) x.^2.*g(x), 2,10,.00001)
+    
 
     c0Hat = @(q0,c) (1/(2*kappa*(1+c).^2))*(q0 + varNoise);
     cHat = @(q0,c) (1./(2*kappa*(1+c)));
@@ -85,8 +93,11 @@ for kcnt=1:numK
 
         %epsilon = random('logistic',0,1,n,1);
 
-        epsilon = randn(n,1)*sigNoise;
-
+        %epsilon = randn(n,1)*sigNoise;
+        sign = 2*round(rand(n,1))-1;
+        epsilon = sign.*exprnd(s,n,1);  %double exponential
+        
+        
         y = X*beta0 + epsilon;
 
 
@@ -109,21 +120,21 @@ for kcnt=1:numK
 end
 
 
-save generalValidateReplica.mat kappaSet qReplica qErr
+save generalValidateReplica.mat kappaSet q0Replica qErr
 
 hold on;
 kappaMat = repmat(kappaSet, numSim, 1);
-kappaSetVec = reshape(kappaMat,1,numKappa*numSim);
-qErrVec = reshape(qErr,1,numKappa*numSim);
+kappaSetVec = reshape(kappaMat,1,numK*numSim);
+qErrVec = reshape(qErr,1,numK*numSim);
 
 
 scatter(kappaSetVec, qErrVec,'r.');
 
-pThy = plot(kappaSet, qReplica,'k');
+pThy = plot(kappaSet, q0Replica,'k');
 
 set(pThy,'Linewidth',2.5);
 
-legend('Theory','Simulations')
+%legend('Simulations','Theory')
 
 xlabel('kappa');
 ylabel('error')

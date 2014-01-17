@@ -1,12 +1,19 @@
 clear all;
 close all;
 
+numSim = 10;
 
-kappaSet = linspace(.1,1.5,numK)
+numK=16;
+kappaSet = linspace(.1,1.5,numK);
+q0Replica = zeros(size(kappaSet));
+
+qErr = zeros(numSim,numK);
 
 
+tic
 for kcnt=1:numK
-
+    disp('Big Loop')
+    [kcnt,numK]
     kappa = kappaSet(kcnt);
     
     gauss = @(x,sigma) (2*pi*sigma.^2).^(-1/2)*exp(-x.^2./(2*sigma.^2));
@@ -44,9 +51,9 @@ for kcnt=1:numK
 
     Ftot = @(q0,c) (F1(q0,c)^2+F2(q0,c)^2);
 
-    [q0,c,err]=gridMin2d(Ftot,0,0,3,3,.01)
-
-
+    [q0,c,err]=gridMin2d(Ftot,0,0,3,3,.01);
+    
+    q0Replica(kcnt) =q0; 
 
 
 
@@ -57,10 +64,9 @@ for kcnt=1:numK
     s = 1;
     lambda =1;
 
-    disp('Simulations')
+    disp('Simulation')
 
-    numSim = 10;
-    qErr = zeros(1,numSim);
+    
     for cnt = 1:numSim
         [cnt,numSim]
         X = (1/sqrt(p))*randn(n,p); %random unit normal design matrix
@@ -91,33 +97,42 @@ for kcnt=1:numK
         bMin = fminunc(@(b)(1/2*norm(y-X*b,2)^2 + lambda*norm(b,1)),randn(p,1));
 
 
-        qErr(cnt) = (1/p)*norm(bMin - beta0,2)^2;
-
-    %       rho = @(x)(1/2)*x.^2;
-    %       
-    %       %sigma = @(x)zeros(size(x)); %Easy case
-    %       sigma = @(x) (1/2)*lambda*(x.^2);
-    %       
-    %       tic
-    %       [bMinS]=fminunc(@(b)sum(rho(y-X*b)), randn(p,1));
-    %       %[bMinS] = fminunc(@(b) sum(rho(y-X*b)) + sum(sigma(b)),randn(p,1));
-    %       toc
-    %       
-    %       rhoErr(cnt) = (1/sqrt(P))*norm(bMinS - beta0,2);
+        qErr(cnt,kcnt) = (1/p)*norm(bMin - beta0,2)^2;
     end
 
-
-    disp('Numerical Experiment: Estimate of 65% confidence interval')
-    [mean(qErr)-std(qErr),mean(qErr)+std(qErr)]
-
-    disp('Replica Result')
-    q0
-
+%     disp('Numerical Experiment: Estimate of 65% confidence interval')
+%     [mean(qErr)-std(qErr),mean(qErr)+std(qErr)]
+% 
+%     disp('Replica Result')
+%     q0
 
 end
 
 
+save generalValidateReplica.mat kappaSet q0Replica qErr
 
+hold on;
+kappaMat = repmat(kappaSet, numSim, 1);
+kappaSetVec = reshape(kappaMat,1,numKappa*numSim);
+qErrVec = reshape(qErr,1,numKappa*numSim);
+
+
+scatter(kappaSetVec, qErrVec,'r.');
+
+pThy = plot(kappaSet, qReplica,'k');
+
+set(pThy,'Linewidth',2.5);
+
+legend('Theory','Simulations')
+
+xlabel('kappa');
+ylabel('error')
+toc
+
+
+
+
+title('Validating results with Gaussian Noise and L1 regularizer')
 
 
 
