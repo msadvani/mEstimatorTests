@@ -1,0 +1,33 @@
+function [ out] = gridMin(fun,a,b,tol)
+%Attempts to find the smalles value of a function between a and b using a
+%grid search
+
+N=100;
+
+xSet = linspace(a,b,N);
+funSet = zeros(size(xSet));
+
+
+while abs(a-b)>tol
+
+
+
+for cnt = 1:N
+    x = xSet(cnt);
+    funSet(cnt) = fun(x);
+    
+end
+
+[val,arg]=min(funSet)
+
+a = 
+
+end
+
+
+
+
+
+
+end
+

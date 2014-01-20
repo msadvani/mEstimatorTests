@@ -1,0 +1,4 @@
+kappa = .3;
+fNoise = @(x) GammaDist(x);
+g = @(x) .5*exp(-abs(x));
+
