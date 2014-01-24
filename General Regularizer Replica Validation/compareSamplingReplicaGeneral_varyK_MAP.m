@@ -3,8 +3,8 @@ close all;
 
 numSim = 10;
 
-numK=2;
-kappaSet = linspace(.1,2.0,numK);
+numK=10;
+kappaSet = linspace(.05,4.0,numK);
 q0Replica = zeros(size(kappaSet));
 
 qErr = zeros(numSim,numK);
@@ -43,7 +43,7 @@ for kcnt=1:numK
 
 
     %% Simulation
-    n=800;
+    n=1500;
     p = round(n*kappa);
     s = 1;
 
@@ -94,8 +94,10 @@ for kcnt=1:numK
 
 end
 
+qErrMAP = qErr;
+q0ReplicMAP = q0Replica;
 
-save generalValidateReplica.mat kappaSet q0Replica qErr
+save replicaMapError_lambda=1.mat kappaSet q0ReplicaMAP qErrMAP
 
 hold on;
 kappaMat = repmat(kappaSet, numSim, 1);
@@ -118,7 +120,7 @@ toc
 
 
 
-title('Validating results with Gaussian Noise Laplacian coefficients and and L1 regularizer, lambda =2')
+title('Validating results with Gaussian Noise Laplacian coefficients and and L1 regularizer, lambda =1')
 
 
 

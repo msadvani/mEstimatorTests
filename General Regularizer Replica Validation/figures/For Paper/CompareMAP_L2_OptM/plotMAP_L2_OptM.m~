@@ -1,0 +1,60 @@
+close all;
+clear all;
+
+load OptM_LapPred.mat
+load replicaMapError_lambda=1.mat
+load replicaL2Error_lambda=1.mat
+
+
+
+hold on;
+
+
+plot(kappaSet, q0ReplicaMAP,'b');
+plot(kappaSet, q0ReplicaL2,'r');
+plot(kappaSet, qOpt,'k--');
+
+
+legend('MAP error','L2 Regularizer Error','Optimal M-estimator Error');
+
+xlabel('\kappa  (P/N)')
+ylabel('q0 MSE per predictor')
+
+title('Comparison of Asymptotic performance of MAP, L2, and Optimal M-Estimator Error')
+
+%Note you can add in the data measurements if you like, but it may make the
+%plot harder to read.
+
+
+
+
+
+
+
+
+
+%% Fix and use for scatter plots
+ numSim = size(qErrMAP,1);
+numK = size(qErrMAP,2)
+% 
+% kappaMat = repmat(kappaSet, numSim, 1);
+% kappaSetVec = reshape(kappaMat,1,numK*numSim);
+% qErrVec = reshape(qErr,1,numK*numSim);
+% 
+% 
+% scatter(kappaSetVec, qErrVec,'r.');
+% 
+% pThy = plot(kappaSet, q0Replica,'k');
+% 
+% set(pThy,'Linewidth',2.5);
+% 
+% %legend('Simulations','Theory')
+% 
+% xlabel('kappa');
+% ylabel('error')
+% toc
+% 
+% 
+% 
+% 
+% title('Validating results with Gaussian Noise Laplacian coefficients and and L1 regularizer, lambda =2')
