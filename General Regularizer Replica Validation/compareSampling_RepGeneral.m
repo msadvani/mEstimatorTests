@@ -12,9 +12,9 @@ fNoise = @(x) GammaDist(x);
 
 g = @(x) 1/2*exp(-abs(x));
 
-
-%%%Just a test of function
-q0 = compute_q0(kappa,fNoise, g,1,lambda)
+% 
+% %%%Just a test of function
+% q0 = compute_q0(kappa,fNoise, g,1,lambda)
 
 
 

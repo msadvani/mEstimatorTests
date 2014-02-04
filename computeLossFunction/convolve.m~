@@ -1,0 +1,14 @@
+function [ out ] = convolve(x,fun1,fun2)
+%Convolve 
+quad(@(yfun1(x-y).*fun2(y))
+
+
+
+
+
+
+
+
+
+end
+
