@@ -1,8 +1,8 @@
 fNoise = @(x) (1/2)*exp(-abs(x));
 
 
-numKappa = 40;
-kappaSet = linspace(.02,.98,numKappa);
+numKappa = 30;
+kappaSet = linspace(.05,.95,numKappa);
 
  qL2 = @(k) 2*k./(1-k);
 

@@ -5,7 +5,7 @@
 clear all;
 close all;
  
-numKappa = 20;
+numKappa = 30;
 kappaSet = linspace(.1,5,numKappa);
 
 
